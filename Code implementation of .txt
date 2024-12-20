@@ -1,0 +1,170 @@
+Code implementation of 
+
+AND gates 
+library ieee;
+use ieee.std_logic_1164.all;
+entity and gate is
+port (x:in std-logic:y in std_logic; z:out std_logic);
+end and gate;
+architecture andlogic of andgates of andgate is begin
+z<=x and y
+
+OR gates
+library ieee;
+use ieee.std-logic_1164.all;
+entity orgate is
+port (x:in std_logic ; y: in std_logic;z:out std_logic);
+end orgate ;
+  
+
+mux
+library ieee;
+use ieee.std_logic_1164.all;
+
+entity mux is
+port(D0,D1,D2,D3,S0,S1: in std_logic; Y: out std_logic);
+end mux;
+
+architecture muxarch of mux is begin
+process(D0,D1,D2,D3,S0,S1)is begin
+if(S0='0' and S1='0') then
+Y<= D0;
+elsif(S0='0' and S1='1') then
+Y<= D1;
+elsif(S0='1' and S1='0') then
+Y<= D2;
+else
+Y<= D3;
+end if;
+end process;
+end muxarch;
+
+half subtractor
+
+library ieee;
+use ieee.std_logic_1164.all;
+
+entity halfsubtractor is
+port (a,b:in std_logic;d,b:out std_logic);
+end halfsubtractor;
+
+architecture halfsubtractorlogic of halfsubtractor is begin
+d <=a xor b;
+b <=(not a) and b;
+end halfsubtractorlogic;
+
+
+full adder
+
+library ieee;
+use ieee.std_logic_1164.all;
+
+entity fulladder is
+port (a,b,cin:in std_logic;s,c:out std_logic);
+end fulladder;
+
+architecture fulladderlogic of fulladder is begin
+s <= a xor b xor cin;
+c <= (a and b) or ((a xor b) and cin);
+end fulladderlogic;
+
+
+
+
+encoder
+library ieee;
+use ieee.std_logic_1164.all;
+
+entity encoder is
+port (y1,y2,y3,y4,y5,y6,y7:in std_logic;a0,a1,a2:out std_logic);
+end encoder;
+
+architecture encoderlogic of encoder is begin
+a0 <= y1 or y3 or y5 or y7;
+a1 <= y2 or y3 or y6 or y7;
+a2 <= y4 or y5 or y6 or y7;
+end encoderlogic;
+
+
+demuxx
+library ieee;
+use ieee.std_logic_1164.all;
+
+entity demux is
+port(S0,S1,Y: in std_logic; D0,D1,D2,D3: out std_logic);
+end demux;
+
+architecture demuxarch of demux is begin
+process(Y,S0,S1)is begin
+if(S0='0' and S1='0') then
+D0<= Y ;
+elsif(S0='0' and S1='1') then
+D1<=Y;
+D0<='0';
+elsif(S0='1' and S1='0') then
+D2<=Y;
+D1<='0';
+D0<='0';
+else
+D3<=Y;
+D1<='0';
+D2<='0';
+D0<='0';
+end if;
+end process;
+end demuxarch;
+
+
+decoder
+library ieee;
+use ieee.std_logic_1164.all;
+
+entity decoder is
+port(a0,a1,a2:in std_logic;y0,y1,y2,y3,y4,y5,y6,y7:out std_logic);
+end decoder;
+
+architecture decoderlogic of decoder is begin
+y0 <= (not a0) and (not a1) and (not a2);
+y1 <= (not a0) and (not a1) and a2;
+y2 <= (not a0) and a1 and (not a2);
+y3 <= (not a0) and a1 and  a2;
+y4 <= a0 and (not a1) and (not a3);
+y5 <= a0 and (not a1) and a2;
+y6 <= a0 and a1 and (not a2);
+y7 <= a0 and a1 and a2;
+end decoderlogic;
+
+
+
+aluuuu
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+entity alu is
+port (
+a, b: in std_logic_vector(1 downto 0);
+alu_set: in std_logic_vector(2 downto 0);
+alu_out: out std_logic_vector(1 downto 0);
+carry: out std_logic
+);
+end alu;
+architecture alulogic of alu is
+signal alu_result: std_logic_vector(1 downto 0);
+begin
+process(a, b, alu_set) begin
+case alu_set is
+when "000" =>
+alu_result <= std_logic_vector(unsigned(a) +
+unsigned(b));
+when "001" =>
+alu_result <= std_logic_vector(unsigned(a) -
+unsigned(b));
+when "010" =>
+alu_result <= std_logic_vector(unsigned(a) *
+unsigned(b));
+when others =>
+alu_result <= a and b;
+end case;
+end process;
+alu_out <= alu_result;
+end alulogic;
